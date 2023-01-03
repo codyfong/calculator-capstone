@@ -151,7 +151,9 @@ background-color:#8200fc;}
     border: 2px solid white;
     border-radius: 3px;
     width: 20%;
-    height: 10%;
+    min-height: 150px;
+    text-align: center;
+
 }
 
 .history-btn{
@@ -163,10 +165,12 @@ background-color:#8200fc;}
 }
 
 #cards-list{
+    padding: 20px;
     display: flex;
     height: 100%;
     width: 100%;
-    align-items: top;
-    justify-items: left;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex-flow: row wrap;
+    
 }
