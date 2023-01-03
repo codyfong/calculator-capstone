@@ -134,20 +134,24 @@ function deleteCard(ID){
 function reuseCard(ID){
     let card = document.getElementById(`card-${ID}`)
     calcQuery.textContent = card.dataset.query
+    calcAnswer.textContent = ''
 }
 
 function useResult(ID){
     let card = document.getElementById(`card-${ID}`)
     calcQuery.textContent = card.dataset.result
+    calcAnswer.textContent = ''
 }
 
 function addReuseCard(ID){
     let card = document.getElementById(`card-${ID}`)
     calcQuery.textContent = calcQuery.textContent+card.dataset.query
+    calcAnswer.textContent = ''
 }
 function addUseResult(ID){
     let card = document.getElementById(`card-${ID}`)
     calcQuery.textContent = calcQuery.textContent+card.dataset.result
+    calcAnswer.textContent = ''
 }
 
 
