@@ -136,13 +136,16 @@ section {
     1px -1px 0 #000,
     -1px -1px 0 #000;
 }
-
+.calculator-btn:hover{
+    background-color: #464646;
+}
 .calculator-btn:active {
 transform: scale(0.98);
 /* Scaling button to 0.98 to its original size */
 box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 /* Lowering the shadow */
-background-color:#8200fc;}
+background-color:#8200fc;
+}
 
 .history-card{
     color:white;
@@ -161,7 +164,16 @@ background-color:#8200fc;}
     border-color: white;
     border-radius:5px; 
     color: #fff;
-
+}
+.history-btn:hover{
+    background-color: #464646;
+}
+.history-btn:active{
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    background-color:#8200fc;
 }
 
 #cards-list{

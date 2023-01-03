@@ -141,19 +141,39 @@ function useResult(ID){
     calcQuery.textContent = card.dataset.result
 }
 
+function addReuseCard(ID){
+    let card = document.getElementById(`card-${ID}`)
+    calcQuery.textContent = calcQuery.textContent+card.dataset.query
+}
+function addUseResult(ID){
+    let card = document.getElementById(`card-${ID}`)
+    calcQuery.textContent = calcQuery.textContent+card.dataset.result
+}
+
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
 let cardID = 0
-function addCard(query, result){
+function addCard(query, result, requestType){
+    requestType = capitalizeFirstLetter(requestType)
     const newCard = document.createElement('div')
     newCard.classList.add('history-card')
     newCard.id = `card-${cardID}`
     newCard.dataset.query = query
     newCard.dataset.result = result
     newCard.innerHTML = `
+        <h1>Operation: ${requestType} </h1>
+        </br>
         <h1>Input: ${query}</h1>
         <h1>Result: ${result}</h1>
-        <button onclick="deleteCard(${cardID})" id="delete" class="history-btn">delete</button>
-        <button onclick="reuseCard(${cardID})" id="reuse" class="history-btn">reuse</button>
-        <button onclick="useResult(${cardID})" id="use-result" class="history-btn">use result</button>
+        </br>
+        <button onclick="deleteCard(${cardID})" id="delete" class="history-btn">Delete</button>
+        <button onclick="reuseCard(${cardID})" id="reuse" class="history-btn">Reuse</button>
+        <button onclick="useResult(${cardID})" id="use-result" class="history-btn">Use Result</button>
+        <button onclick="addReuseCard(${cardID})" id="add-reuse" class="history-btn">Add Input to Query</button>
+        <button onclick="addUseResult(${cardID})" id="add-result" class="history-btn">Add Result to Query</button>
     `
     cardList.appendChild(newCard)
     cardID++
@@ -161,6 +181,7 @@ function addCard(query, result){
 
 function deleteMath(evt){
     calcQuery.textContent = calcQuery.textContent.slice(0, calcQuery.textContent.length-1)
+    calcAnswer.textContent = ''
 }
 
 function clearMath(evt){
@@ -182,25 +203,28 @@ function urlEncoder(queryString){
 function submitIntegrate(){
     reqType = "integrate"
     submitMath()
-    reqType = "simplify"
 }
 
 function submitDerive(){
     reqType = "derive"
     submitMath()
+}
+
+function submitEqual(){
     reqType = "simplify"
+    submitMath()
 }
 
 function submitMath(){
     reqString = urlEncoder(calcQuery.textContent)
-    console.log(reqString)
     axios.get(`https://newton.vercel.app/api/v2/${reqType}/${reqString}`)
     .then(res => {
         let result = res.data.result
         result = result.replaceAll("pi","π")
+        result = result.replaceAll("exp","e^")
         calcAnswer.textContent = `Result: ${result}` 
-
-        addCard(calcQuery.textContent, result)
+        console.log(reqType)
+        addCard(calcQuery.textContent.trim(), result, reqType)
     })
 }
 
@@ -235,7 +259,7 @@ integrateButton.addEventListener('click', submitIntegrate)
 deriveButton.addEventListener('click', submitDerive)
 
 
-equalButton.addEventListener('click', submitMath)
+equalButton.addEventListener('click', submitEqual)
 clearButton.addEventListener('click', clearMath)
 deleteButton.addEventListener('click', deleteMath)
 
