@@ -29,15 +29,17 @@ const sinButton = document.querySelector('#sin-btn')
 const cosButton = document.querySelector('#cos-btn')
 const tanButton = document.querySelector('#tan-btn')
 
-const percentButton = document.querySelector('#percent-btn')
+const deriveButton = document.querySelector('#derive-btn')
+const integrateButton = document.querySelector('#integrate-btn')
 const factorialButton = document.querySelector('#factorial-btn')
 
 const eButton = document.querySelector('#e-btn')
 const expButton = document.querySelector('#exp-btn')
-const sqrtButton = document.querySelector('#sqrt-btn')
 
+const sqrtButton = document.querySelector('#sqrt-btn')
 const radianButton = document.querySelector('#radian-btn')
 const degreeButton = document.querySelector('#degree-btn')
+const percentButton = document.querySelector('#percent-btn')
 
 
 let reqType = "simplify"
@@ -118,6 +120,9 @@ function addE(evt){
     calcQuery.textContent = calcQuery.textContent + 'e'
 }
 
+function addFactorial(evt){
+    calcQuery.textContent = calcQuery.textContent + '!'
+}
 
 
 
@@ -174,6 +179,18 @@ function urlEncoder(queryString){
     return queryString
 }
 
+function submitIntegrate(){
+    reqType = "integrate"
+    submitMath()
+    reqType = "simplify"
+}
+
+function submitDerive(){
+    reqType = "derive"
+    submitMath()
+    reqType = "simplify"
+}
+
 function submitMath(){
     reqString = urlEncoder(calcQuery.textContent)
     console.log(reqString)
@@ -182,7 +199,7 @@ function submitMath(){
         let result = res.data.result
         result = result.replaceAll("pi","π")
         calcAnswer.textContent = `Result: ${result}` 
-        reqType = "simplify"
+
         addCard(calcQuery.textContent, result)
     })
 }
@@ -212,6 +229,10 @@ cosButton.addEventListener('click', addCos)
 piButton.addEventListener('click', addPi)
 expButton.addEventListener('click', addExp)
 eButton.addEventListener('click', addE)
+factorialButton.addEventListener('click', addFactorial)
+
+integrateButton.addEventListener('click', submitIntegrate)
+deriveButton.addEventListener('click', submitDerive)
 
 
 equalButton.addEventListener('click', submitMath)
