@@ -157,7 +157,7 @@ function addUseResult(ID){
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+}
 
 let cardID = 0
 function addCard(query, result, requestType){
@@ -168,16 +168,23 @@ function addCard(query, result, requestType){
     newCard.dataset.query = query
     newCard.dataset.result = result
     newCard.innerHTML = `
+        <div>
         <h1>Operation: ${requestType} </h1>
         </br>
+        </div>
+        </br>
+        <div id="input-result">
         <h1>Input: ${query}</h1>
         <h1>Result: ${result}</h1>
         </br>
+        </div>
+        <div id="card-btns">
         <button onclick="deleteCard(${cardID})" id="delete" class="history-btn">Delete</button>
         <button onclick="reuseCard(${cardID})" id="reuse" class="history-btn">Reuse</button>
         <button onclick="useResult(${cardID})" id="use-result" class="history-btn">Use Result</button>
         <button onclick="addReuseCard(${cardID})" id="add-reuse" class="history-btn">Add Input to Query</button>
         <button onclick="addUseResult(${cardID})" id="add-result" class="history-btn">Add Result to Query</button>
+        </div>
     `
     cardList.appendChild(newCard)
     cardID++
