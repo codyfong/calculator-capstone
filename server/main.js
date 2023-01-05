@@ -22,6 +22,7 @@ function createPost (req, res) {
 }
 
 function sendPosts (req,res) {
+    console.log('hit')
     res.status(200).send(allPosts)
 }
 
