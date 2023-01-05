@@ -42,8 +42,8 @@ const baseURL = "http://localhost:4000/api"
 let reqType = "simplify"
 
 
-function loadPosts(res) {
-    console.log(res)
+function loadPosts(evt) {
+    console.log(evt)
     axios.get(`/api/posts`)
     .then(res => {
         console.log(res.data)
