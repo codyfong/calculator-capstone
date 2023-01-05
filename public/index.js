@@ -36,15 +36,15 @@ const expButton = document.querySelector('#exp-btn')
 
 const postsDiv = document.querySelector('#posts')
 
-// const baseURL = "http://localhost:4000/api"
-const baseURL = "http://107.20.43.234/api"
+const baseURL = "http://localhost:4000/api"
+// const baseURL = "http://107.20.43.234/api"
 
 let reqType = "simplify"
 
 
 function loadPosts(res) {
     console.log(res)
-    axios.get(`${baseURL}/posts`)
+    axios.get(`/api/posts`)
     .then(res => {
         console.log(res.data)
         res.data.forEach(element => {
@@ -191,7 +191,7 @@ async function shareResult(ID){
     }
     postsDiv.innerHTML = ""
     console.log(ID)
-    await axios.post(`${baseURL}/posts`, post )
+    await axios.post(`/api/posts`, post )
     loadPosts()
 
 }

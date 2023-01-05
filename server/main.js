@@ -33,4 +33,5 @@ app.get(`/api/posts`, sendPosts)
 
 app.post(`/api/posts`, createPost)
 
+
 app.listen(4000, console.log('Server running on 4000'))
