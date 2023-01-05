@@ -1,3 +1,4 @@
+
 const plusButton = document.querySelector('#plus-btn')
 const minusButton = document.querySelector('#minus-btn')
 const multiplyButton = document.querySelector('#multiply-btn')
@@ -19,7 +20,6 @@ const deleteButton = document.querySelector('#del-btn')
 const calcQuery = document.querySelector('#calculator-query')
 const calcAnswer = document.querySelector('#calculator-answer')
 const cardList = document.querySelector('#cards-list')
-
 const decimalButton = document.querySelector('#decimal-btn')
 const openParenButton = document.querySelector('#open-paren-btn')
 const closedParenButton = document.querySelector('#closed-paren-btn')
@@ -28,21 +28,45 @@ const piButton = document.querySelector('#pi-btn')
 const sinButton = document.querySelector('#sin-btn')
 const cosButton = document.querySelector('#cos-btn')
 const tanButton = document.querySelector('#tan-btn')
-
 const deriveButton = document.querySelector('#derive-btn')
 const integrateButton = document.querySelector('#integrate-btn')
 const factorialButton = document.querySelector('#factorial-btn')
-
 const eButton = document.querySelector('#e-btn')
 const expButton = document.querySelector('#exp-btn')
 
-const sqrtButton = document.querySelector('#sqrt-btn')
-const radianButton = document.querySelector('#radian-btn')
-const degreeButton = document.querySelector('#degree-btn')
-const percentButton = document.querySelector('#percent-btn')
+const postsDiv = document.querySelector('#posts')
 
+const baseURL = `http://localhost:4000/api`
 
 let reqType = "simplify"
+
+
+function loadPosts(res) {
+    console.log(res)
+    axios.get(`${baseURL}/posts`)
+    .then(res => {
+        console.log(res.data)
+        res.data.forEach(element => {
+            let { type, result, query } = element
+            let newCard = document.createElement('div')
+            newCard.classList.add(`post-card`)
+            newCard.innerHTML = `
+            <div>
+            <h1>${type}:</h1>
+            <h2>${query}</h2>
+            <div/>
+            <div>
+            <h1>Result:</h1>
+            <h2>${result}</h2>
+            </div>
+            `
+            postsDiv.appendChild(newCard)
+        });
+    })
+    .catch(err => console.log(err))
+}
+
+window.onload = loadPosts
 
 function addPlus(evt){
     calcQuery.textContent = calcQuery.textContent + '+'
@@ -124,8 +148,6 @@ function addFactorial(evt){
     calcQuery.textContent = calcQuery.textContent + '!'
 }
 
-
-
 function deleteCard(ID){
     let card = document.getElementById(`card-${ID}`)
     card.remove()
@@ -159,6 +181,22 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+async function shareResult(ID){
+    let card = document.getElementById(`card-${ID}`)
+    let post = {
+        query: card.dataset.query,
+        result: card.dataset.result,
+        type: card.dataset.type
+    }
+    postsDiv.innerHTML = ""
+    console.log(ID)
+    await axios.post(`${baseURL}/posts`, post )
+    loadPosts()
+
+}
+
+
+
 let cardID = 0
 function addCard(query, result, requestType){
     requestType = capitalizeFirstLetter(requestType)
@@ -167,6 +205,7 @@ function addCard(query, result, requestType){
     newCard.id = `card-${cardID}`
     newCard.dataset.query = query
     newCard.dataset.result = result
+    newCard.dataset.type = requestType
     newCard.innerHTML = `
         <div>
         <h1>Operation: ${requestType} </h1>
@@ -184,6 +223,7 @@ function addCard(query, result, requestType){
         <button onclick="useResult(${cardID})" id="use-result" class="history-btn">Use Result</button>
         <button onclick="addReuseCard(${cardID})" id="add-reuse" class="history-btn">Add Input to Query</button>
         <button onclick="addUseResult(${cardID})" id="add-result" class="history-btn">Add Result to Query</button>
+        <button onclick="shareResult(${cardID})" id="share-result" class="history-btn">Share Result </button>
         </div>
     `
     cardList.appendChild(newCard)
@@ -234,10 +274,11 @@ function submitMath(){
         result = result.replaceAll("pi","π")
         result = result.replaceAll("exp","e^")
         calcAnswer.textContent = `Result: ${result}` 
-        console.log(reqType)
         addCard(calcQuery.textContent.trim(), result, reqType)
     })
 }
+
+
 
 plusButton.addEventListener('click', addPlus)
 minusButton.addEventListener('click', addMinus)
@@ -265,11 +306,8 @@ piButton.addEventListener('click', addPi)
 expButton.addEventListener('click', addExp)
 eButton.addEventListener('click', addE)
 factorialButton.addEventListener('click', addFactorial)
-
 integrateButton.addEventListener('click', submitIntegrate)
 deriveButton.addEventListener('click', submitDerive)
-
-
 equalButton.addEventListener('click', submitEqual)
 clearButton.addEventListener('click', clearMath)
 deleteButton.addEventListener('click', deleteMath)
