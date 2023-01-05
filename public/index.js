@@ -36,7 +36,8 @@ const expButton = document.querySelector('#exp-btn')
 
 const postsDiv = document.querySelector('#posts')
 
-const baseURL = `http://localhost:4000/api`
+// const baseURL = "http://localhost:4000/api"
+const baseURL = "http://http://107.20.43.234//api"
 
 let reqType = "simplify"
 
